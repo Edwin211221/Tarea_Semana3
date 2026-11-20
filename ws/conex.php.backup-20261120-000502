@@ -1,0 +1,21 @@
+<?php
+require_once 'config.php';
+
+class cls_conexion
+{
+    public $conexion;
+
+    public function conectar()
+    {
+        $this->conexion = mysqli_connect(host, usuario, clave, db);
+
+        if (!$this->conexion) {
+            die("Error de conexion: " . mysqli_connect_error());
+        }
+
+        mysqli_set_charset($this->conexion, 'utf8');
+
+        return $this->conexion;
+    }
+}
+?>

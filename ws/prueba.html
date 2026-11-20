@@ -1,0 +1,45 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de Login</title>
+</head>
+<body>
+    <h2>Probar conexión PHP y MySQL</h2>
+
+    <input type="text" id="usuario" placeholder="Usuario">
+    <input type="password" id="clave" placeholder="Contraseña">
+
+    <button onclick="probar()">Ingresar</button>
+
+    <h3>Respuesta del servidor:</h3>
+    <pre id="resultado"></pre>
+
+    <script>
+        async function probar() {
+            const datos = {
+                accion: "loggin",
+                usuario: document.getElementById("usuario").value,
+                clave: document.getElementById("clave").value
+            };
+
+            try {
+                const respuesta = await fetch("persona.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(datos)
+                });
+
+                const texto = await respuesta.text();
+                document.getElementById("resultado").textContent = texto;
+            } catch (error) {
+                document.getElementById("resultado").textContent =
+                    "Error: " + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

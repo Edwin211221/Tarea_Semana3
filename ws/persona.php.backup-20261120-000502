@@ -1,0 +1,23 @@
+<?php
+require_once ("conex.php");
+
+$post = json_decode(file_get_contents('php://input'), true);
+
+if (isset($post['accion']) && $post['accion'] == "loggin") {
+    $conex = new cls_conexion();
+    $conex = $conex->conectar();
+
+    $sentencia = sprintf("SELECT * from persona where usuario='%s' and clave='%s'", $post['usuario'], $post['clave']);
+    $rs = mysqli_query($conex, $sentencia);
+
+    if (mysqli_num_rows($rs) > 0) {
+        $row = mysqli_fetch_assoc($rs);
+        $respuesta = json_encode(array(
+            "estado" => true, "codigo" => $row['codigo']));} 
+    else {
+        $respuesta = json_encode(array(
+            "estado" => false, "mensaje" => "Usuario o clave incorrecto"));
+    }
+    echo $respuesta;
+}
+?>
